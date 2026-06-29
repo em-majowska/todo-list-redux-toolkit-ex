@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./features/hooks";
-// import { tasksSliceSelector } from "./features/tasks/tasksSlice";
+import { fetch_list, todosSelector } from "./features/tasks/tasksSlice";
 import { TbSunMoon } from "react-icons/tb";
 import { switch_theme, themeSliceSelector } from "./features/theme/themeSlice";
 import ToDoForm from "./components/ToDoForm";
@@ -9,7 +9,7 @@ import TodoList from "./components/TodoList";
 function App() {
   const dispatch = useAppDispatch();
   const theme = useAppSelector(themeSliceSelector);
-  // const { taskList, isLoading, error } = useAppSelector(tasksSliceSelector);
+  const { taskList, isLoading, error } = useAppSelector(todosSelector);
 
   useEffect(() => {
     const root = document.querySelector("#root");
@@ -20,7 +20,7 @@ function App() {
       root?.classList.remove("dark");
     }
 
-    // dispatch(fetch_data());
+    dispatch(fetch_list());
   }, [theme, dispatch]);
 
   return (
@@ -37,12 +37,9 @@ function App() {
         </div>
         <p>Add thing to do</p>
         <ToDoForm />
-        {/* {isLoading && <p>Loading ...</p>} */}
-        {/* {error && <p>{error}</p>} */}
-        {/* {taskList && (
-
-        )} */}
-        <TodoList />
+        {isLoading && <p>Loading ...</p>}
+        {error && <p>{error}</p>}
+        {taskList && <TodoList />}
       </section>
     </div>
   );
